@@ -13,11 +13,11 @@ Scripts are written with
 database
 the database file is mrs32atbr.sql
 
-The system was centered on a military hospital where a supervisor oversee every action of all staff and patients. Therefore, there are four login previleges.
+The system was centered on a military hospital where a supervisor oversee every action of all staff and patients. Therefore, there are five login previleges.
 
 1. Supervisor / CO
 2. Doctor
-3 Pharmarcist 
+3. Pharmarcist 
 4. Lab scientist
 5. Admin
 
