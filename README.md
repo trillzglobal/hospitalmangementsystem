@@ -21,4 +21,4 @@ The system was centered on a military hospital where a supervisor oversee every 
 4. Lab scientist
 5. Admin
 
-Read "How it works" to know how the hospital mnagement  works"
+Read "Using hospital web application.pdgf" to know how the hospital mnagement  works"
