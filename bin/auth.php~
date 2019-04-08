@@ -1,0 +1,13 @@
+<?php
+error_reporting(E_ALL);
+ini_set('error_reporting', E_ALL);
+session_start();
+if(!isset($_SESSION["logged"]) && !isset($_SESSION["users"])){
+header("Location: ../index.php");
+exit(); }
+
+
+
+
+
+?>

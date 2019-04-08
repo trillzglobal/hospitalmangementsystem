@@ -1,0 +1,411 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: bane
+ * Date: 18/04/2017
+ * Time: 6:33 PM
+ */
+error_reporting(E_ALL); 
+ini_set('display_errors', 1); 
+require_once  "functions.php";
+session_start();
+
+
+if(isset($_GET["modal_insert"]) && isset($_SESSION["held_up_data"])) {
+    if (!empty($_SESSION["held_up_data"])) {
+        add_a_cm($_SESSION["held_up_data"], $_SESSION["held_up_data_files"]);
+        unset($_SESSION["held_up_data"]);
+        unset( $_SESSION["held_up_data_files"]);
+    }
+}
+
+
+if(isset($_GET["insert"]) && isset($_POST)){
+    if(!empty($_POST)){
+        $_SESSION["upload_errors"] = [];
+
+        $_SESSION["empty_fields"] = [];
+    if($_POST["firstname"] == "") array_push($_SESSION["empty_fields"],"firstname") ;
+        if( $_POST["lastname"] == "") array_push($_SESSION["empty_fields"],"lastname") ;
+        if( $_POST["middlename"] == "") array_push($_SESSION["empty_fields"],"middlename");
+       if($_POST["institution"] == "") array_push($_SESSION["empty_fields"],"institution");
+        if($_POST["email"] == "" ) array_push($_SESSION["empty_fields"],"email");
+        if($_POST["callupno"] == "") array_push($_SESSION["empty_fields"],"callupno");
+        if($_POST["statecode"] == "") array_push($_SESSION["empty_fields"],"statecode");
+        if( $_POST["gender"] == "") array_push($_SESSION["empty_fields"],"gender") ;
+        if( $_POST["certificate"] == "") array_push($_SESSION["empty_fields"],"certificate") ;
+        if( $_POST["course"] == "") array_push($_SESSION["empty_fields"],"course") ;
+        if( $_POST["gsm_no"] == "") array_push($_SESSION["empty_fields"],"gsm_no");
+        if( $_POST["health_status"] == "") array_push($_SESSION["empty_fields"],"health_status");
+        if( $_POST["origin"] == "") array_push($_SESSION["empty_fields"],"origin");
+        if( $_POST["maritalstatus"] == "") array_push($_SESSION["empty_fields"],"maritalstatus") ;
+        if( $_POST["grade"] == "") array_push($_SESSION["empty_fields"],"grade");
+        if( $_POST["stream"] == "") array_push($_SESSION["empty_fields"],"stream");
+        if( $_POST["deployment_type"] == "") array_push($_SESSION["empty_fields"],"deployment_type");
+        if( $_POST["deployment_state"] == "") array_push($_SESSION["empty_fields"],"deployment_state");
+        if( $_POST["next_of_kin_name"] == "")  array_push($_SESSION["empty_fields"],"next_of_kin_name");
+        if( $_POST["next_of_kin_address"] == "") array_push($_SESSION["empty_fields"],"next_of_kin_address");
+        if( $_POST["next_of_kin_gsm"]  == "")array_push($_SESSION["empty_fields"],"next_of_kin_gsm");
+        if( $_POST["next_of_kin_relationship"] == "") array_push($_SESSION["empty_fields"],"next_of_kin_relationship");
+        if($_POST["lga"] == "") array_push($_SESSION["empty_fields"],"lga") ;
+        if( $_POST["date_of_posting"]  == "")array_push($_SESSION["empty_fields"],"date_of_posting") ;
+        if( $_POST["employer_address"] == "") array_push($_SESSION["empty_fields"],"employer_address");
+        if( $_POST["employer_name"]  == "") array_push($_SESSION["empty_fields"],"employer_name");
+        if( $_POST["previous_statecode"] == "") array_push($_SESSION["empty_fields"],"previous_statecode") ;
+        if( $_POST["original_deployment"] == "") array_push($_SESSION["empty_fields"],"original_deployment");
+        if( $_POST["place_of_relocation"] == "") array_push($_SESSION["empty_fields"],"place_of_relocation");
+        if(  $_POST["date_of_approval"]  == "") array_push($_SESSION["empty_fields"],"date_of_approval");
+        if( $_POST["status"] == "") array_push($_SESSION["empty_fields"],"status");
+        if( $_POST["reason"] == "") array_push($_SESSION["empty_fields"],"reason") ;
+
+
+        $temp6 = explode(".", $_FILES["passport_photo"]["name"]);
+        $temp5 = explode(".", $_FILES["health_related_upload"]["name"]);
+        $temp4 = explode(".", $_FILES["sch_related_upload_1"]["name"]);
+        $temp3 = explode(".", $_FILES["sch_related_upload_2"]["name"]);
+        $temp2 = explode(".", $_FILES["sch_related_upload_3"]["name"]);
+        $temp = explode(".", $_FILES["query_related_upload"]["name"]);
+
+
+
+        if( $_FILES["passport_photo"]["name"] == "")
+        {array_push($_SESSION["empty_fields"],"passport_photo");}
+        elseif($_FILES["passport_photo"]["name"] != ""){
+            if(end($temp6) == "jpg" || end($temp6) == "jpeg" || end($temp6) == "png" || end($temp6) == "gif")
+            {
+                if($_FILES["passport_photo"]["size"] > 5000000){
+                    array_push($_SESSION["upload_errors"], "Uploaded Passport Photo Is Too Large");
+                }else {
+                $_SESSION["upload_errors"][] = "Uploaded Passport Photo Will Be Uploaded ";}
+            }else{
+                $_SESSION["upload_errors"][] = "Uploaded Passport Photo is not an image So Will Not Be Uploaded";
+            }
+
+        };
+
+        if( $_FILES["health_related_upload"]["name"] == "")
+        {array_push($_SESSION["empty_fields"],"Health Related Document");}
+        else{
+            if(end($temp5) == "jpg" || end($temp5) == "jpeg" || end($temp5) == "png" || end($temp5) == "gif") {
+
+                if($_FILES["health_related_upload"]["size"] > 5000000){
+                    array_push($_SESSION["upload_errors"], "Uploaded Health Related Document Is Too Large");
+                }else {
+                array_push($_SESSION["upload_errors"],"Uploaded Health Related Document Will Be Uploaded");}
+            }else{
+                array_push($_SESSION["upload_errors"],"Uploaded Health Related Document Is Not An Image So WIll Not Be Uploaded");
+            }
+        }
+
+        if( $_FILES["sch_related_upload_1"]["name"] == "")
+        {array_push($_SESSION["empty_fields"],"School Related Document 1");}
+        else{
+            if(end($temp4) == "jpg" || end($temp4) == "jpeg" || end($temp4) == "png" || end($temp4) == "gif"){
+                if($_FILES["sch_related_upload_1"]["size"] > 5000000){
+                    array_push($_SESSION["upload_errors"], "Uploaded School Related Document 1 Is Too Large");
+                }else {
+                array_push($_SESSION["upload_errors"],"Uploaded School Related Document 1 Will Be Uploaded ");
+                }
+            }else{
+                array_push($_SESSION["upload_errors"],"Uploaded School Related Document 1 Is Not An Image So WIll Not Be Uploaded");
+            }
+        }
+        if( $_FILES["sch_related_upload_2"]["name"] == "")
+        {array_push($_SESSION["empty_fields"],"School Related Document 2");}
+        else{
+            if(end($temp3) == "jpg" || end($temp3) == "jpeg" || end($temp3) == "png" || end($temp3) == "gif") {
+                if($_FILES["sch_related_upload_2"]["size"] > 5000000){
+                    array_push($_SESSION["upload_errors"], "Uploaded School Related Document 2 Is Too Large");
+                }else {
+                    array_push($_SESSION["upload_errors"], "Uploaded School Related Document 2 Will Be Uploaded");
+                }
+            }else{
+                array_push($_SESSION["upload_errors"],"Uploaded School Related Document 2 Is Not An Image So WIll Not Be Uploaded");
+
+            }
+
+        }
+        if( $_FILES["sch_related_upload_3"]["name"] == ""){
+            array_push($_SESSION["empty_fields"],"School Related Document 3");
+        }else{
+            if(end($temp2) == "jpg" || end($temp2) == "jpeg" || end($temp2) == "png" || end($temp2) == "gif") {
+                if($_FILES["sch_related_upload_3"]["size"] > 5000000){
+                    array_push($_SESSION["upload_errors"], "Uploaded School Related Document 3 Is Too Large");
+                }else {
+                array_push($_SESSION["upload_errors"],"Uploaded School Related Document 3 Will Be Uploaded");
+                }
+
+            }else{
+                array_push($_SESSION["upload_errors"],"Uploaded School Related Document 3 Is Not An Image So WIll Not Be Uploaded");
+
+            }
+
+        }
+
+        if(  $_FILES["query_related_upload"]["name"] == ""){
+            array_push($_SESSION["empty_fields"],"Query Related Document");
+        }else{
+            if(end($temp) == "jpg" || end($temp) == "jpeg" || end($temp) == "png" || end($temp) == "gif") {
+
+               if($_FILES["query_related_upload"]["size"] > 5000000){
+                   array_push($_SESSION["upload_errors"], "Uploaded Query Related Document Is Too Large");
+               }else {
+                   array_push($_SESSION["upload_errors"], "Uploaded Query Related Document Will Be Uploaded");
+               }
+            }else{
+                array_push($_SESSION["upload_errors"],"Uploaded Query Related Document Is Not An Image So WIll Not Be Uploaded");
+
+            }
+
+        };
+
+
+        if(count($_SESSION["empty_fields"]) > 10 ){
+            //add_a_cm($_POST);
+            $_SESSION["held_up_data"] = $_POST;
+            $_SESSION["held_up_data_files"] = $_FILES;
+        }else{
+            $_SESSION["errmsg_fields"] = "Too Many Empty Fields";
+
+        }
+
+    }else{
+        $_SESSION["errmsg_fields"] = "empty insert";
+    }
+}
+
+if(isset($_GET["search"]) && isset($_POST)){
+    if(!empty($_POST["firstname"]) || !empty($_POST["middlename"]) || !empty($_POST["lastname"]) || !empty($_POST["statecode"]) || !empty($_POST["callupno"]) || !empty($_POST["email"]) || !empty($_POST["institution"]) ){
+      $_SESSION["data"] = find_a_cm($_POST);
+
+    }else{
+        $_SESSION["errmsg"] = "empty search";
+    }
+
+}
+
+
+if(isset($_GET["view_after_insert"])){
+        $_SESSION["data4"] = find_a_single_cm($_SESSION["id_from_edit"]);
+        header("Location: ../dashboard/view_after_insert.php");
+}
+
+if(isset($_GET["view"]) && isset($_POST)){
+    if(!empty($_POST["id"]) && empty($_SESSION["id_after_edit"])){
+
+        $_SESSION["data2"] = find_a_single_cm($_POST);
+
+        header("Location: ../dashboard/view_cm.php");
+
+    }
+}
+
+if(isset($_GET["view_by_statecode"]) && isset($_POST)){
+    if($_POST['statecode'] != ""){
+        $result = find_a_single_cm_by_statecode($_POST["statecode"]);
+        if(!empty($result)){
+            $_SESSION["data2"] = $result;
+            header("Location: ../dashboard/view_cm.php");
+
+        }
+
+        $_SESSION["errmsg"] = "empty post";
+    }
+
+}
+
+if(isset($_GET["delete"]) && isset($_POST)){
+    if(!empty($_POST)){
+        delete_a_single_cm($_POST);
+        header("Location: ../dashboard/home.php");
+    }else{
+        $_SESSION["errmsg"] = "empty post";
+    }
+
+}
+
+if(isset($_GET["edit"]) && isset($_POST)){
+    if(!empty($_POST)){
+        $_SESSION["data2"] =  find_a_single_cm($_POST);
+        header("Location: ../dashboard/edit_cm.php");
+    }else{
+        $_SESSION["errmsg"] = "empty post";
+    }
+}
+
+/*if(isset($_GET["update"]) && isset($_POST)){
+    if(!empty($_POST)){
+        update_a_single_cm($_POST);
+    }else{
+        $_SESSION["errmsg"] = "empty post";
+    }
+}*/
+
+
+if(isset($_GET["update"]) && isset($_POST)){
+    if(!empty($_POST)){
+
+        $_SESSION["upload_errors"]= [];
+
+        $_SESSION["empty_fields"] = [];
+        if($_POST["firstname"] == "") array_push($_SESSION["empty_fields"],"firstname") ;
+        if( $_POST["lastname"] == "") array_push($_SESSION["empty_fields"],"lastname") ;
+        if( $_POST["middlename"] == "") array_push($_SESSION["empty_fields"],"middlename");
+        if($_POST["institution"] == "") array_push($_SESSION["empty_fields"],"institution");
+        if($_POST["email"] == "" ) array_push($_SESSION["empty_fields"],"email");
+        if($_POST["callupno"] == "") array_push($_SESSION["empty_fields"],"callupno");
+        if($_POST["statecode"] == "") array_push($_SESSION["empty_fields"],"statecode");
+        if( $_POST["gender"] == "") array_push($_SESSION["empty_fields"],"gender") ;
+        if( $_POST["certificate"] == "") array_push($_SESSION["empty_fields"],"certificate") ;
+        if( $_POST["course"] == "") array_push($_SESSION["empty_fields"],"course") ;
+        if( $_POST["gsm_no"] == "") array_push($_SESSION["empty_fields"],"gsm_no");
+        if( $_POST["health_status"] == "") array_push($_SESSION["empty_fields"],"health_status");
+        if( $_POST["origin"] == "") array_push($_SESSION["empty_fields"],"origin");
+        if( $_POST["maritalstatus"] == "") array_push($_SESSION["empty_fields"],"maritalstatus") ;
+        if( $_POST["grade"] == "") array_push($_SESSION["empty_fields"],"grade");
+        if( $_POST["stream"] == "") array_push($_SESSION["empty_fields"],"stream");
+        if( $_POST["deployment_type"] == "") array_push($_SESSION["empty_fields"],"deployment_type");
+        if( $_POST["deployment_state"] == "") array_push($_SESSION["empty_fields"],"deployment_state");
+        if( $_POST["next_of_kin_name"] == "")  array_push($_SESSION["empty_fields"],"next_of_kin_name");
+        if( $_POST["next_of_kin_address"] == "") array_push($_SESSION["empty_fields"],"next_of_kin_address");
+        if( $_POST["next_of_kin_gsm"]  == "")array_push($_SESSION["empty_fields"],"next_of_kin_gsm");
+        if( $_POST["next_of_kin_relationship"] == "") array_push($_SESSION["empty_fields"],"next_of_kin_relationship");
+        if($_POST["lga"] == "") array_push($_SESSION["empty_fields"],"lga") ;
+        if( $_POST["date_of_posting"]  == "")array_push($_SESSION["empty_fields"],"date_of_posting") ;
+        if( $_POST["employer_address"] == "") array_push($_SESSION["empty_fields"],"employer_address");
+        if( $_POST["employer_name"]  == "") array_push($_SESSION["empty_fields"],"employer_name");
+        if( $_POST["previous_statecode"] == "") array_push($_SESSION["empty_fields"],"previous_statecode") ;
+        if( $_POST["original_deployment"] == "") array_push($_SESSION["empty_fields"],"original_deployment");
+        if( $_POST["place_of_relocation"] == "") array_push($_SESSION["empty_fields"],"place_of_relocation");
+        if(  $_POST["date_of_approval"]  == "") array_push($_SESSION["empty_fields"],"date_of_approval");
+        if( $_POST["status"] == "") array_push($_SESSION["empty_fields"],"status");
+        if( $_POST["reason"] == "") array_push($_SESSION["empty_fields"],"reason") ;
+        if( $_POST["service_year"] == "") array_push($_SESSION["empty_fields"],"Service Year");
+        if( $_POST["certificate_no"] == "") array_push($_SESSION["empty_fields"],"Certificate No") ;
+
+
+        $temp6 = explode(".", $_FILES["passport_photo"]["name"]);
+        $temp5 = explode(".", $_FILES["health_related_upload"]["name"]);
+        $temp4 = explode(".", $_FILES["sch_related_upload_1"]["name"]);
+        $temp3 = explode(".", $_FILES["sch_related_upload_2"]["name"]);
+        $temp2 = explode(".", $_FILES["sch_related_upload_3"]["name"]);
+        $temp = explode(".", $_FILES["query_related_upload"]["name"]);
+
+
+
+        if( $_FILES["passport_photo"]["name"] == "")
+        {array_push($_SESSION["empty_fields"],"passport_photo");}
+        elseif($_FILES["passport_photo"]["name"] != ""){
+            if(end($temp6) == "jpg" || end($temp6) == "jpeg" || end($temp6) == "png" || end($temp6) == "gif")
+            {
+                if($_FILES["passport_photo"]["size"] > 5000000){
+                    array_push($_SESSION["upload_errors"], "<p style='color: red;'> Uploaded Passport Photo Is Too Large</p>");
+                }else {
+                    $_SESSION["upload_errors"][] = "Uploaded Passport Photo Will Be Uploaded ";}
+            }else{
+                $_SESSION["upload_errors"][] = "Uploaded Passport Photo is not an image So Will Not Be Uploaded";
+            }
+
+        };
+
+        if( $_FILES["health_related_upload"]["name"] == "")
+        {array_push($_SESSION["empty_fields"],"Health Related Document");}
+        else{
+            if(end($temp5) == "jpg" || end($temp5) == "jpeg" || end($temp5) == "png" || end($temp5) == "gif") {
+
+                if($_FILES["health_related_upload"]["size"] > 5000000){
+                    array_push($_SESSION["upload_errors"], "Uploaded Health Related Document Is Too Large");
+                }else {
+                    array_push($_SESSION["upload_errors"],"Uploaded Health Related Document Will Be Uploaded");}
+            }else{
+                array_push($_SESSION["upload_errors"],"Uploaded Health Related Document Is Not An Image So WIll Not Be Uploaded");
+            }
+        }
+
+        if( $_FILES["sch_related_upload_1"]["name"] == "")
+        {array_push($_SESSION["empty_fields"],"School Related Document 1");}
+        else{
+            if(end($temp4) == "jpg" || end($temp4) == "jpeg" || end($temp4) == "png" || end($temp4) == "gif"){
+                if($_FILES["sch_related_upload_1"]["size"] > 5000000){
+                    array_push($_SESSION["upload_errors"], "Uploaded School Related Document 1 Is Too Large");
+                }else {
+                    array_push($_SESSION["upload_errors"],"Uploaded School Related Document 1 Will Be Uploaded ");
+                }
+            }else{
+                array_push($_SESSION["upload_errors"],"Uploaded School Related Document 1 Is Not An Image So WIll Not Be Uploaded");
+            }
+        }
+        if( $_FILES["sch_related_upload_2"]["name"] == "")
+        {array_push($_SESSION["empty_fields"],"School Related Document 2");}
+        else{
+            if(end($temp3) == "jpg" || end($temp3) == "jpeg" || end($temp3) == "png" || end($temp3) == "gif") {
+                if($_FILES["sch_related_upload_2"]["size"] > 5000000){
+                    array_push($_SESSION["upload_errors"], "Uploaded School Related Document 2 Is Too Large");
+                }else {
+                    array_push($_SESSION["upload_errors"], "Uploaded School Related Document 2 Will Be Uploaded");
+                }
+            }else{
+                array_push($_SESSION["upload_errors"],"Uploaded School Related Document 2 Is Not An Image So WIll Not Be Uploaded");
+
+            }
+
+        }
+        if( $_FILES["sch_related_upload_3"]["name"] == ""){
+            array_push($_SESSION["empty_fields"],"School Related Document 3");
+        }else{
+            if(end($temp2) == "jpg" || end($temp2) == "jpeg" || end($temp2) == "png" || end($temp2) == "gif") {
+                if($_FILES["sch_related_upload_3"]["size"] > 5000000){
+                    array_push($_SESSION["upload_errors"], "Uploaded School Related Document 3 Is Too Large");
+                }else {
+                    array_push($_SESSION["upload_errors"],"Uploaded School Related Document 3 Will Be Uploaded");
+                }
+
+            }else{
+                array_push($_SESSION["upload_errors"],"Uploaded School Related Document 3 Is Not An Image So WIll Not Be Uploaded");
+
+            }
+
+        }
+
+        if(  $_FILES["query_related_upload"]["name"] == ""){
+            array_push($_SESSION["empty_fields"],"Query Related Document");
+        }else{
+            if(end($temp) == "jpg" || end($temp) == "jpeg" || end($temp) == "png" || end($temp) == "gif") {
+
+                if($_FILES["query_related_upload"]["size"] > 5000000){
+                    array_push($_SESSION["upload_errors"], "Uploaded Query Related Document Is Too Large");
+                }else {
+                    array_push($_SESSION["upload_errors"], "Uploaded Query Related Document Will Be Uploaded");
+                }
+            }else{
+                array_push($_SESSION["upload_errors"],"Uploaded Query Related Document Is Not An Image So WIll Not Be Uploaded");
+
+            }
+
+        };
+
+
+        if(count($_SESSION["empty_fields"]) > 10 ){
+
+            $_SESSION["held_up_update_data"] = $_POST;
+            $_SESSION["held_up_update_data_files"] = $_FILES;
+        }else{
+            $_SESSION["errmsg_fields"] = "Too Many Empty Fields";
+
+        }
+
+    }else{
+        $_SESSION["errmsg_fields"] = "empty insert";
+    }
+}
+
+if(isset($_GET["modal_update"])  && isset($_SESSION["held_up_update_data"])) {
+    if (!empty($_SESSION["held_up_update_data"])) {
+        update_a_single_cm($_SESSION["held_up_update_data"],$_SESSION["held_up_update_data_files"]);
+        unset($_SESSION["held_up_update_data"]);
+        unset( $_SESSION["held_up_update_data_files"]);
+    }
+
+}
+
+

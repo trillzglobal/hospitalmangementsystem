@@ -1,0 +1,76 @@
+html,body{
+    height: 100%;
+    width: 100%;
+}
+
+.logo{
+    background: url('../images/nysc.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 200px;
+    width: 200px;
+    margin: auto;
+    margin-top: 2em;
+
+    margin-bottom: 2em;
+}
+
+.lil{
+    ;
+    padding-bottom: 1em ;
+}
+.login-home{
+    padding-top: 10%;
+}
+
+.navbar {
+    min-height: 50px;
+    margin-bottom: 0;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+.holder{
+padding-top: 0px;
+}
+
+.real-container{
+    padding-top: 10%;
+
+}
+@media(min-width: 768px){
+    .navbar-brand{
+        line-height: 40px;
+    }
+}
+.seearch-field {
+    padding-top: 5em;
+}
+
+@media(max-width: 767px){
+
+    .fullbar{width: 100%;float: left;padding: 1.5em; padding-top: 0em;}
+}
+@media(min-width: 768px){
+    .fullbar{width: 75%;float: right; padding: 1.5em; padding-top: 0em;}
+}
+
+@media(max-width: 767px){
+
+    .sidebar { background: rgba(95%,95%,95%,1); overflow: auto;   min-height:20em; width: 100%; float: left;padding: 1.5em; padding-top: 7em;}
+
+    .table {margin-top: 1.5em;}
+
+}
+
+@media(min-width: 768px){
+
+    .sidebar {padding: 1.5em;position: fixed;background: rgba(95%,95%,95%,1); min-height:100vh;
+        overflow: auto; width: 25%; float: left; padding-top: 7em;}
+
+}
+
+li{
+    list-style-type: none;
+}

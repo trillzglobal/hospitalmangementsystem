@@ -1,0 +1,541 @@
+<?php
+session_start();
+$host = "localhost";
+$user = "root";
+$pass ="abayomi1981";
+$db = "nyscportal";
+
+require_once "document_upload_helper.php";
+
+$conn = mysqli_connect($host,$user,$pass,$db);
+if(mysqli_connect_error()){
+    $_SESSION["error"] = 'could not connect to db';
+}else {
+
+    function add_a_cm($data,$files)
+    {
+        global $conn;
+
+        extract($data);
+        $date = date("Y-m-d h:i:s");
+        $firstname = mysqli_real_escape_string($conn, $firstname);
+        $lastname = mysqli_real_escape_string($conn, $lastname);
+        $middlename = mysqli_real_escape_string($conn, $middlename);
+        $institution = mysqli_real_escape_string($conn, $institution);
+        $email = mysqli_real_escape_string($conn, $email);
+
+        $callupno = mysqli_real_escape_string($conn, $callupno);
+        $statecode = mysqli_real_escape_string($conn, $statecode);
+
+        $year = mysqli_real_escape_string($conn, $service_year);
+        $certificate_no = mysqli_real_escape_string($conn, $certificate_no);
+
+        $gender = mysqli_real_escape_string($conn, $gender);
+        $certificate = mysqli_real_escape_string($conn, $certificate);
+        $course = mysqli_real_escape_string($conn, $course);
+        $gsm_no = mysqli_real_escape_string($conn, $gsm_no);
+        $health_status = mysqli_real_escape_string($conn, $health_status);
+        $origin = mysqli_real_escape_string($conn, $origin);
+        $maritalstatus = mysqli_real_escape_string($conn, $maritalstatus);
+        $grade = mysqli_real_escape_string($conn, $grade);
+
+        $stream = mysqli_real_escape_string($conn, $stream);
+        $deployment_type = mysqli_real_escape_string($conn, $deployment_type);
+        $deployment_state = mysqli_real_escape_string($conn, $deployment_state);
+
+
+        $next_of_kin_name = mysqli_real_escape_string($conn, $next_of_kin_name);
+        $next_of_kin_address = mysqli_real_escape_string($conn, $next_of_kin_address);
+        $next_of_kin_gsm = mysqli_real_escape_string($conn, $next_of_kin_gsm);
+        $next_of_kin_relationship = mysqli_real_escape_string($conn, $next_of_kin_relationship);
+
+        $lga = mysqli_real_escape_string($conn, $lga);
+        $date_of_posting = mysqli_real_escape_string($conn, $date_of_posting);
+        $employer_address = mysqli_real_escape_string($conn, $employer_address);
+        $employer_name = mysqli_real_escape_string($conn, $employer_name);
+
+        $previous_statecode = mysqli_real_escape_string($conn, $previous_statecode);
+        $original_deployment = mysqli_real_escape_string($conn, $original_deployment);
+        $place_of_relocation = mysqli_real_escape_string($conn, $place_of_relocation);
+        $date_of_approval = mysqli_real_escape_string($conn, $date_of_approval);
+        $status = mysqli_real_escape_string($conn, $status);
+        $reason = mysqli_real_escape_string($conn, $reason);
+
+        $temp6 = explode(".", $files["passport_photo"]["name"]);
+        $temp5 = explode(".", $files["health_related_upload"]["name"]);
+        $temp4 = explode(".", $files["sch_related_upload_1"]["name"]);
+        $temp3 = explode(".", $files["sch_related_upload_2"]["name"]);
+        $temp2 = explode(".", $files["sch_related_upload_3"]["name"]);
+        $temp = explode(".", $files["query_related_upload"]["name"]);
+
+        $upload_errors = [];
+
+
+        if($files["passport_photo"]["name"] != ""){
+
+            if (end($temp6) == "jpg" || end($temp6) == "jpeg" || end($temp6) == "png" || end($temp6) == "gif"){
+                if ($files["passport_photo"]["size"] < 5000000) {
+                    $passport_photor = "../uploads/pp/" . $firstname . $middlename . $lastname . "_passphoto." . end($temp6);
+                } else {
+                    $upload_errors[] = "<font color='red'> Passport Photo Is Too Big</font>";
+                    $passport_photor = '';
+                }
+            } else {
+                $upload_errors[] = "Passport Photo Is Not An Image";
+                $passport_photor = '';
+            }
+        }else{
+            $upload_errors[] = "<font color='red'>Passport Photo Not There</font>";
+            $passport_photor = '';
+        }
+
+        if( $files["health_related_upload"]["name"] != ""){
+            if (end($temp5) == "jpg" || end($temp5) == "jpeg" || end($temp5) == "png" || end($temp5) == "gif") {
+                if ($files["health_related_upload"]["size"] < 5000000) {
+                    $health_related_uploadr = "../uploads/healthpics/" . $firstname . $middlename . $lastname . "_health_related_upload." . end($temp5);
+
+                } else {
+                    $upload_errors[] = "Health Related Document Is Too Big";
+                    $health_related_uploadr = '';
+                }
+            } else {
+                $upload_errors[] = "Health Related Document Is Not An Image";
+                $health_related_uploadr = '';
+            }
+        }else{
+            $upload_errors[] = "Health Related Document Not There";
+            $health_related_uploadr = '';
+        }
+
+        if($files["sch_related_upload_1"]["name"] != ""){
+            if (end($temp4) == "jpg" || end($temp4) == "jpeg" || end($temp4) == "png" || end($temp4) == "gif") {
+                if ($files["sch_related_upload_1"]["size"] < 5000000) {
+                    $sch_related_upload_1r = "../uploads/schpics/" . $firstname . $middlename . $lastname . "_sch_related_pic1." . end($temp4);
+                } else {
+                    $upload_errors[] = "School Related Document 1 Is Too Big";
+                    $sch_related_upload_1r = '';
+                }
+            } else {
+                $upload_errors[] = "School Related Document 1 Is Not An Image";
+                $sch_related_upload_1r = '';
+            }
+        }else{
+            $upload_errors[] = "School Related Document 1 Not There";
+            $sch_related_upload_1r = '';
+        }
+
+
+        if($files["sch_related_upload_2"]["name"] != ""){
+            if (end($temp3) == "jpg" || end($temp3) == "jpeg" || end($temp3) == "png" || end($temp3) == "gif") {
+                if ($files["sch_related_upload_2"]["size"] < 5000000) {
+
+                    $sch_related_upload_2r = "../uploads/schpics/" . $firstname . $middlename . $lastname . "_sch_related_pic2." . end($temp3);
+                } else {
+                    $upload_errors[] = "School Related Document 2 Is Too Big";
+                    $sch_related_upload_2r = '';
+                }
+            } else {
+                $upload_errors[] = "School Related Document 2 Is Not An Image";
+                $sch_related_upload_2r = '';
+            }
+        }else{
+            $upload_errors[] = "School Related Document 2 Not There";
+            $sch_related_upload_2r = '';
+        }
+
+        if($files["sch_related_upload_3"]["name"] != "") {
+            if (end($temp2) == "jpg" || end($temp2) == "jpeg" || end($temp2) == "png" || end($temp2) == "gif") {
+                if ($files["sch_related_upload_3"]["size"] < 5000000) {
+
+                    $sch_related_upload_3r = "../uploads/schpics/" . $firstname . $middlename . $lastname . "_sch_related_pic3." . end($temp2);
+                } else {
+                    $upload_errors[] = "School Related Document 3 Is Too Big";
+                    $sch_related_upload_3r = '';
+                }
+            } else {
+                $upload_errors[] = "School Related Document 3 Is Not An Image";
+                $sch_related_upload_3r = '';
+            }
+        }else{
+            $upload_errors[] = "School Related Document 3 Not There";
+            $sch_related_upload_3r = '';
+        }
+
+        if($files["query_related_upload"]["name"] != "") {
+            if (end($temp) == "jpg" || end($temp) == "jpeg" || end($temp) == "png" || end($temp) == "gif") {
+                if ($files["query_related_upload"]["size"] < 5000000) {
+
+                    $query_related_uploadr = "../uploads/querypics/" . $firstname . $middlename . $lastname . "_query_pic." . end($temp);
+                } else {
+                    $upload_errors[] = "Query Related Document Is Too Big";
+                    $query_related_uploadr = '';
+                }
+            } else {
+                $upload_errors[] = "Query Related Document Is Not An Image";
+                $query_related_uploadr = '';
+            }
+        }else{
+            $upload_errors[] = "Query Related Document Is Not There";
+            $query_related_uploadr = '';
+        }
+
+        $query_string = "INSERT INTO cm_details (passport_photo,statecode,firstname,lastname,middlename, institution,email, callupno,date_added) VALUES  ('$passport_photor','$statecode','$firstname','$lastname','$middlename','$institution','$email','$callupno','$date')";
+        $query = mysqli_query($conn, $query_string);
+
+
+        if ($query) {
+            $last_id = mysqli_insert_id($conn);
+            $quer = "INSERT INTO extra_basic_details (cm_id,grade,gender,certificate,course,gsm_no,health_status,origin,maritalstatus,date_added,stream,deployment_state,deployment_type) VALUES ('$last_id','$grade', '$gender','$certificate','$course','$gsm_no','$health_status','$origin','$maritalstatus','$date','$stream','$deployment_state','$deployment_type');";
+            $quer .= "INSERT INTO next_of_kin_details (cm_id,next_of_kin_name,next_of_kin_gsm,next_of_kin_address,next_of_kin_relationship,date_added) VALUES ('$last_id', '$next_of_kin_name','$next_of_kin_gsm','$next_of_kin_address','$next_of_kin_relationship','$date');";
+            $quer .= "INSERT INTO ppa (cm_id,lga,date_of_posting,employer_address,employer_name,date_added) VALUES ('$last_id', '$lga','$date_of_posting','$employer_address','$employer_name','$date');";
+            $quer .= "INSERT INTO uploads (cm_id,query_related_upload, health_related_upload,sch_related_upload_1,sch_related_upload_2,sch_related_upload_3,date_added) VALUES ('$last_id','$query_related_uploadr','$health_related_uploadr','$sch_related_upload_1r','$sch_related_upload_2r','$sch_related_upload_3r','$date');";
+            $quer .= "INSERT INTO graduationDetails (`cm_id` ,`year`, `certificate`,`date_added`) VALUES ('$last_id','$year','$certificate_no','$date');";
+            $quer .= "INSERT INTO relocation_details (cm_id,relocation_status,previous_statecode,original_deployment,place_of_relocation,date_of_approval,status, reason,date_added) VALUES ('$last_id','$relocate_status','$previous_statecode','$original_deployment','$place_of_relocation','$date_of_approval','$status','$reason','$date')";
+
+            if (mysqli_multi_query($conn, $quer)) {
+                $_SESSION["upload_errs"] = $upload_errors;
+                if(!empty($upload_errors)) {
+                    unset($_SESSION["error"]);
+                    $_SESSION["error"] = "Successfully Inserted Some";
+                }else{
+                    unset($_SESSION["error"]);
+                    $_SESSION["error"] = "Successfully Inserted All";
+                    $_SESSION["id_after_edit"] = $last_id;
+                }
+                header("Location: ../dashboard/home.php");
+            } else {
+                unset($_SESSION["error"]);
+                $_SESSION["error"] = "Error: " . mysqli_error($conn);
+            };
+        } else {
+            $_SESSION["error"] = mysqli_error($conn);
+        }
+
+
+    }
+
+    function find_a_cm($data){
+        global  $conn;
+        extract($data);
+        $firstname = mysqli_real_escape_string($conn, $firstname);
+        $lastname = mysqli_real_escape_string($conn, $lastname);
+        $middlename = mysqli_real_escape_string($conn, $middlename);
+        $institution = mysqli_real_escape_string($conn, $institution);
+        $email = mysqli_real_escape_string($conn, $email);
+        $callupno = mysqli_real_escape_string($conn,$callupno);
+        $statecode = mysqli_real_escape_string($conn, $statecode);
+
+
+
+        $sqli = "SELECT * FROM cm_details WHERE statecode LIKE '%$statecode%' AND firstname LIKE '%$firstname%' " .
+            "AND lastname LIKE '%$lastname%' AND middlename LIKE '%$middlename%' AND " .
+            "institution LIKE '%$institution%' AND email LIKE '%$email%' AND callupno LIKE '%$callupno%' AND deleted = 0 ";
+
+        $query = mysqli_query($conn, $sqli);
+        if($query){
+
+
+            $result = array();
+
+            while(($row = mysqli_fetch_assoc($query))) {
+                $result[] = $row;
+            }
+            unset($_SESSION["error"]);
+            $_SESSION["error"] = 'successfully found results';
+            return $result;
+        }else{
+            unset($_SESSION["error"]);
+            $_SESSION["error"] = "could not find results";
+        }
+
+    }
+
+    function find_a_single_cm($data){
+        global  $conn;
+        if(is_array($data)){
+            extract($data);
+        }else{
+            $id = $data;
+        }
+        $sql = "SELECT cm_details.id,grade,stream,graduationDetails.year,graduationDetails.certificate as nysccert, deployment_state,deployment_type,passport_photo,firstname,middlename,lastname,statecode,institution,email,
+callupno,gender,extra_basic_details.certificate,course,gsm_no,health_status,origin,maritalstatus,next_of_kin_name,
+next_of_kin_gsm,next_of_kin_address,next_of_kin_relationship,lga,date_of_posting,employer_address,
+employer_name,previous_statecode,original_deployment,place_of_relocation,date_of_approval,status,
+reason,query_related_upload,health_related_upload,sch_related_upload_1,sch_related_upload_2,
+sch_related_upload_3 FROM cm_details INNER JOIN extra_basic_details ON cm_details.id = extra_basic_details.cm_id
+ INNER JOIN next_of_kin_details ON cm_details.id = next_of_kin_details.cm_id INNER JOIN ppa ON cm_details.id = ppa.cm_id
+  INNER JOIN relocation_details ON cm_details.id = relocation_details.cm_id 
+  INNER JOIN uploads ON cm_details.id = uploads.cm_id 
+  INNER JOIN graduationDetails ON cm_details.id = graduationDetails.cm_id WHERE cm_details.id = '$id' AND deleted = 0";
+
+        $query = mysqli_query($conn, $sql);
+
+        if($query){
+            $result = mysqli_fetch_all($query, MYSQLI_ASSOC);
+            return $result;
+        }else{
+            unset($_SESSION["error"]);
+            unset($_SESSION["errmsg"]);
+            $_SESSION["errmsg"] = "could not perform query";
+        }
+    }
+
+    function find_a_single_cm_by_statecode($statecode){
+        global  $conn;
+        $sql = "SELECT cm_details.id,grade,stream,graduationDetails.year,graduationDetails.certificate as nysccert, deployment_state,deployment_type,passport_photo,firstname,middlename,lastname,statecode,institution,email,
+callupno,gender,extra_basic_details.certificate,course,gsm_no,health_status,origin,maritalstatus,next_of_kin_name,
+next_of_kin_gsm,next_of_kin_address,next_of_kin_relationship,lga,date_of_posting,employer_address,
+employer_name,previous_statecode,original_deployment,place_of_relocation,date_of_approval,status,
+reason,query_related_upload,health_related_upload,sch_related_upload_1,sch_related_upload_2,
+sch_related_upload_3 FROM cm_details INNER JOIN extra_basic_details ON cm_details.id = extra_basic_details.cm_id
+ INNER JOIN next_of_kin_details ON cm_details.id = next_of_kin_details.cm_id INNER JOIN ppa ON cm_details.id = ppa.cm_id
+  INNER JOIN relocation_details ON cm_details.id = relocation_details.cm_id 
+  INNER JOIN uploads ON cm_details.id = uploads.cm_id 
+  INNER JOIN graduationDetails ON cm_details.id = graduationDetails.cm_id  WHERE cm_details.statecode = '$statecode' AND deleted = 0";
+
+        $query = mysqli_query($conn, $sql);
+
+        if($query){
+            $result = mysqli_fetch_all($query, MYSQLI_ASSOC);
+            return $result;
+
+        }else{
+            unset($_SESSION["errmsg"]);
+            unset($_SESSION["error"]);
+            $_SESSION["errmsg"] = "could not perform query";
+        }
+    }
+
+    function update_a_single_cm($data,$files){
+        global $conn;
+        extract($data);
+        $id = $id;
+        $date = date("Y-m-d h:i:s");
+        $firstname = mysqli_real_escape_string($conn, $firstname);
+        $lastname = mysqli_real_escape_string($conn, $lastname);
+        $middlename = mysqli_real_escape_string($conn, $middlename);
+        $institution = mysqli_real_escape_string($conn, $institution);
+        $email = mysqli_real_escape_string($conn, $email);
+
+        $callupno = mysqli_real_escape_string($conn, $callupno);
+        $statecode = mysqli_real_escape_string($conn, $statecode);
+
+        $year = mysqli_real_escape_string($conn, $service_year);
+        $certificate_no = mysqli_real_escape_string($conn, $certificate_no);
+
+        $gender = mysqli_real_escape_string($conn, $gender);
+        $certificate = mysqli_real_escape_string($conn, $certificate);
+        $course = mysqli_real_escape_string($conn, $course);
+        $gsm_no = mysqli_real_escape_string($conn, $gsm_no);
+        $health_status = mysqli_real_escape_string($conn, $health_status);
+        $origin = mysqli_real_escape_string($conn, $origin);
+        $maritalstatus = mysqli_real_escape_string($conn, $maritalstatus);
+        $grade = mysqli_real_escape_string($conn, $grade);
+
+        $stream = mysqli_real_escape_string($conn, $stream);
+        $deployment_type = mysqli_real_escape_string($conn, $deployment_type);
+        $deployment_state = mysqli_real_escape_string($conn, $deployment_state);
+
+        $next_of_kin_name = mysqli_real_escape_string($conn, $next_of_kin_name);
+        $next_of_kin_address = mysqli_real_escape_string($conn, $next_of_kin_address);
+        $next_of_kin_gsm = mysqli_real_escape_string($conn, $next_of_kin_gsm);
+        $next_of_kin_relationship = mysqli_real_escape_string($conn, $next_of_kin_relationship);
+
+        $lga = mysqli_real_escape_string($conn, $lga);
+        $date_of_posting = mysqli_real_escape_string($conn, $date_of_posting);
+        $employer_address = mysqli_real_escape_string($conn, $employer_address);
+        $employer_name = mysqli_real_escape_string($conn, $employer_name);
+
+        $previous_statecode = mysqli_real_escape_string($conn, $previous_statecode);
+        $original_deployment = mysqli_real_escape_string($conn, $original_deployment);
+        $place_of_relocation = mysqli_real_escape_string($conn, $place_of_relocation);
+        $date_of_approval = mysqli_real_escape_string($conn, $date_of_approval);
+        $status = mysqli_real_escape_string($conn, $status);
+        $reason = mysqli_real_escape_string($conn, $reason);
+
+        $temp6 = explode(".", $files["passport_photo"]["name"]);
+        $temp2 = explode(".", $files["sch_related_upload_3"]["name"]);
+        $temp4 = explode(".", $files["sch_related_upload_1"]["name"]);
+        $temp3 = explode(".", $files["sch_related_upload_2"]["name"]);
+        $temp5 = explode(".", $files["health_related_upload"]["name"]);
+        $temp = explode(".", $files["query_related_upload"]["name"]);
+
+
+
+        $upload_errors = [];
+
+        if($files["passport_photo"]["name"] != ""){
+
+            if(end($temp6) == "jpg" || end($temp6) == "jpeg" || end($temp6) == "png" || end($temp6) == "gif"){
+
+            if($files["passport_photo"]["size"] < 5000000) {
+                $passport_photo = "../uploads/pp/".$firstname.$middlename.$lastname."_passphoto.". end($temp6);
+                $quer10 = "UPDATE cm_details SET  passport_photo =  '$passport_photo' WHERE id = '$id'";
+                $query10 = mysqli_query($conn, $quer10);
+            }else{
+                $upload_errors[] = "Passport Photo Too large To Be Uploaded";
+            }
+            }else{
+                $upload_errors[] = "Passport Photo Is Not An Image";
+            }
+        }
+
+
+        if($files["health_related_upload"]["name"] != "") {
+
+            if (end($temp5) == "jpg" || end($temp5) == "jpeg" || end($temp5) == "png" || end($temp5) == "gif") {
+                if ($files["health_related_upload"]["size"] < 5000000) {
+                    $health_related_upload = "../uploads/healthpics/" . $firstname . $middlename . $lastname . "_health_related_upload." . end($temp5);
+                    $quer9 = "UPDATE uploads SET  health_related_upload =  '$health_related_upload' WHERE cm_id = '$id'";
+                    $query9 = mysqli_query($conn, $quer9);
+                } else {
+                    $upload_errors[] = "Health Document Too large To Be Uploaded";
+                }
+            }else{
+                $upload_errors[] = "Health Document Is Not An Image";
+            }
+        }
+
+        if($files["sch_related_upload_1"]["name"] != "") {
+            if (end($temp4) == "jpg" || end($temp4) == "jpeg" || end($temp4) == "png" || end($temp4) == "gif") {
+                if ($files["sch_related_upload_1"]["size"] < 5000000) {
+                    $sch_related_upload_1 = "../uploads/schpics/" . $firstname . $middlename . $lastname . "_sch_related_pic1." . end($temp4);
+                    $quer8 = "UPDATE uploads SET  sch_related_upload_1 =  '$sch_related_upload_1' WHERE cm_id = '$id'";
+                    $query8 = mysqli_query($conn, $quer8);
+                } else {
+                    $upload_errors[] = "School Related Document 1 Too large To Be Uploaded";
+                }
+            }else{
+                $upload_errors[] = "School Related Document 1  Is Not An Image";
+            }
+        }
+
+        if($files["sch_related_upload_2"]["name"] != "") {
+            if (end($temp3) == "jpg" || end($temp3) == "jpeg" || end($temp3) == "png" || end($temp3) == "gif"){
+                if ($files["sch_related_upload_2"]["size"] < 5000000) {
+                    $sch_related_upload_2 = "../uploads/schpics/" . $firstname . $middlename . $lastname . "_sch_related_pic2." . end($temp3);
+                    $quer7 = "UPDATE uploads SET  sch_related_upload_2 =  '$sch_related_upload_2' WHERE cm_id = '$id'";
+                    $query7 = mysqli_query($conn, $quer7);
+                } else {
+                    $upload_errors[] = "School Related Document 2  Too large To Be Uploaded";
+                }
+        }else{
+                $upload_errors[] = "School Related Document 2 Is Not An Image";
+            }
+        }
+        if($files["sch_related_upload_3"]["name"] != ""){
+            if(end($temp2) == "jpg" || end($temp2) == "jpeg" || end($temp2) == "png" || end($temp2) == "gif" ){
+                if( $files["sch_related_upload_3"]["size"] < 5000000){
+                $sch_related_upload_3  = "../uploads/schpics/".$firstname.$middlename.$lastname."_sch_related_pic3.". end($temp2);
+                $quer6 = "UPDATE uploads SET  sch_related_upload_3 =  '$sch_related_upload_3' WHERE cm_id = '$id'";
+                $query6 = mysqli_query($conn, $quer6);
+            }else{
+                    $upload_errors[] = "School Related Document 3 Too large To Be Uploaded";
+                }
+        }else{
+                $upload_errors[] = "School Related Document 3 Is Not An Image";
+            }
+        }
+
+        if($files["query_related_upload"]["name"] != ""){
+            if(end($temp) == "jpg" || end($temp) == "jpeg" || end($temp) == "png" || end($temp) == "gif" ) {
+                if ($files["query_related_upload"]["size"] < 5000000) {
+                    $query_related_upload = "../uploads/querypics/" . $firstname . $middlename . $lastname . "_query_pic." . end($temp);
+                    $quer5 = "UPDATE uploads SET query_related_upload = '$query_related_upload' WHERE cm_id = '$id'";
+                    $query5 = mysqli_query($conn, $quer5);
+                } else {
+                    $upload_errors[] = "Query Related Document Too large To Be Uploaded";
+                }
+            }else{
+                $upload_errors[] = "Query Related Document Is Not An Image";
+            }
+        }
+
+        $query_string = "UPDATE cm_details SET statecode = '$statecode', firstname = '$firstname',lastname = '$lastname',middlename = '$middlename', institution = '$institution',email = '$email', callupno = '$callupno',date_modified ='$date' WHERE id = '$id'";
+        $quer1 = "UPDATE extra_basic_details SET grade = '$grade', gender = '$gender',certificate = '$certificate',course ='$course',gsm_no ='$gsm_no', health_status ='$health_status',origin ='$origin',maritalstatus = '$maritalstatus', date_modified = '$date', stream = '$stream', deployment_state = '$deployment_state', deployment_type = '$deployment_type' WHERE cm_id = '$id'";
+        $quer2 = "UPDATE next_of_kin_details SET next_of_kin_name = '$next_of_kin_name', next_of_kin_gsm = '$next_of_kin_gsm', next_of_kin_address = '$next_of_kin_address', next_of_kin_relationship = '$next_of_kin_relationship', date_modified = '$date' WHERE cm_id = '$id'";
+        $quer3 = "UPDATE ppa SET  lga = '$lga', date_of_posting = '$date_of_posting', employer_address = '$employer_address', employer_name = '$employer_name', date_modified = '$date' WHERE cm_id = '$id'";
+        $quer4 = "UPDATE relocation_details SET previous_statecode = '$previous_statecode', original_deployment = '$original_deployment', place_of_relocation = '$place_of_relocation', date_of_approval = '$date_of_approval', status = '$status',reason = '$reason', date_modified = '$date', relocation_status = '$relocate_status' WHERE cm_id = '$id'";
+        $quer5 = "UPDATE graduationDetails SET `year` = '$year', certificate = '$certificate_no', date_modified = '$date' WHERE cm_id = '$id' ";
+
+        $query = mysqli_query($conn, $query_string);
+        $query1 = mysqli_query($conn, $quer1);
+        $query2 = mysqli_query($conn, $quer2);
+        $query3 = mysqli_query($conn, $quer3);
+        $query4 = mysqli_query($conn, $quer4);
+        $query5 = mysqli_query($conn, $quer5);
+
+
+
+        if($query && $query1 && $query2 && $query3 && $query4 && $query5){
+            unset($_SESSION["error"]);
+            $_SESSION["upload_errs"] = $upload_errors;
+            $_SESSION["error"] =  "Updated Successfully, ";
+            $_SESSION["has_alert"] = "Updated Successfully";
+            $_SESSION["errmsg"] = "Updated Successfully";
+
+            $_SESSION["id_from_edit"] = $id;
+            $_SESSION["data3"] = find_a_single_cm($id) ;
+            header("Location: ../dashboard/view_after_edit.php");
+        }else{
+            unset($_SESSION["error"]);
+            $_SESSION["error"] = "Error: " . mysqli_error($conn);
+        }
+
+        /*        if($query){
+                    echo "success";
+                    $quer  = "UPDATE extra_basic_details SET grade = '$grade', gender = '$gender',certificate = '$certificate',course ='$course',gsm_no ='$gsm_no', health_status ='$health_status',origin ='$origin',maritalstatus = '$maritalstatus', date_modified = '$date', stream = '$stream', deployment_state = '$deployment_state', deployment_type = '$deployment_type' WHERE cm_id = '$id';";
+                    $quer .= "UPDATE next_of_kin_details SET  next_of_kin_name = '$next_of_kin_name', next_of_kin_gsm = '$next_of_kin_gsm', next_of_kin_address = '$next_of_kin_address', next_of_kin = '$next_of_kin_relationship', date_modified = '$date' WHERE cm_id = '$id';";
+                    $quer .= "UPDATE ppa SET  lga = '$lga', date_of_posting = '$date_of_posting', employer_address = '$employer_address', employer_name = '$employer_name', date_modified = '$date' WHERE id = '$id';";
+                    $quer .= "UPDATE  uploads SET query_related_upload = '$query_related_upload', health_related_upload = '$health_related_upload', sch_related_upload_1 = '$sch_related_upload_1', sch_related_upload_2 = '$sch_related_upload_2', sch_related_upload_3 =  '$sch_related_upload_3', date_modified = '$date' WHERE cm_id = '$id';";
+                    $quer .= "UPDATE relocation_details SET previous_statecode = '$previous_statecode', original_deployment = '$original_deployment', place_of_relocation = '$place_of_relocation', date_of_approval = '$date_of_approval', status = '$status',reason = '$reason', date_modified = '$date' WHERE cm_id = '$id'";
+
+
+                    if(mysqli_multi_query($conn, $quer)){
+                        $_SESSION["successful"] = "Successfully Updated Data";
+                        $_SESSION["error"] =  "Updated Successfully";
+                        $_SESSION["has_alert"] = "Updated Successfully";
+                        $_SESSION["errmsg"] = "Updated Successfully";
+
+                        header("Location: ../dashboard/home.php");
+                    }else{
+                        $_SESSION["error"] = "Error: " . mysqli_error($conn);
+                    };
+                }else{
+
+                    $_SESSION["error"] = "Failed To Insert in general:   ". $id ;
+
+
+                }*/
+    }
+
+    function delete_a_single_cm($data){
+        global  $conn;
+        extract($data);
+        $sql = "DELETE FROM cm_details WHERE id = '$id';";
+         $sql2 = "  DELETE FROM extra_basic_details  WHERE id = '$id';";
+        $sql3 = " DELETE FROM  next_of_kin_details  WHERE id = '$id';";
+        $sql4 = " DELETE FROM  uploads  WHERE id = '$id';";
+        $sql5 = " DELETE FROM  ppa  WHERE id = '$id';";
+        $sql6 = "   DELETE FROM  relocation_details  WHERE id = '$id'";
+        $sql7 = "   DELETE FROM  graduationDetails  WHERE id = '$id'";
+
+
+
+        if( mysqli_query($conn, $sql) &&   mysqli_query($conn, $sql2) &&   mysqli_query($conn, $sql3) &&   mysqli_query($conn, $sql4) &&  mysqli_query($conn, $sql5)  && mysqli_query($conn, $sql6)){
+            header("Location: ../dashboard/home.php");
+            unset($_SESSION["error"]);
+            $_SESSION["error"] = "Delete Successful";
+
+        }else{
+            unset($_SESSION["error"]);
+            $_SESSION["error"] = "Error: ".mysqli_error($conn);
+
+        }
+
+    }
+
+}
+ 
+
+

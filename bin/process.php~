@@ -1,0 +1,32 @@
+<?php
+
+require_once '../db/conn.php';
+session_start();
+
+extract($_POST);
+
+$username = mysqli_real_escape_string($conn, $username);
+$password = mysqli_real_escape_string($conn, md5($password));
+
+$query = mysqli_query($conn, "SELECT * FROM `users` WHERE BINARY username = '$username' AND BINARY password = '$password'");
+
+$result = mysqli_fetch_assoc($query);
+$checker = mysqli_num_rows($query);
+if ($checker != 0){
+
+    				$_SESSION["logged"] = true;
+    				$_SESSION["username"] = $result["username"];
+				$_SESSION["privilege"] = $result["privilege"];
+				header("Location: ../dashboard/home.php ");
+	
+	}
+	
+	 
+else{
+
+    $_SESSION["login_error_msg"] = 'Either user does not exist or there is a problem with the server connection';
+   echo  $_SESSION["login_error_msg"];
+    header("Location: ../index.php");
+	unset($_SESSION["login_error_msg"]);
+};
+

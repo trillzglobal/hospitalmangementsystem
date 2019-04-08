@@ -1,0 +1,231 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: bane
+ * Date: 26/04/2017
+ * Time: 2:50 PM
+ */
+require_once "../bin/auth.php";
+require_once "../db/conn.php";
+//require_once "../bin/ui-helpers.php";
+session_start();
+if (!$_SESSION["logged"]){
+    header("Location: ../index.php");
+    $_SESSION["login_error_msg"] = "You Need To Be Logged In";
+}
+
+?>
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/bootstrap.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link href="../assets/images/img.ico" rel="icon" type="image/x-icon" />
+    <title>NYSC ONDO</title>
+
+</head>
+<body>
+
+<? include "../error_modal.php" ?>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#" style="vertical-align: middle;">Ondo Corpers Database</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="../logout.php" class="btn btn-sm btn-success navbar-btn">Sign Out</a>
+                </li>
+
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+
+<? include "sidebar.php";?>
+
+<div class="fullbar"  style="padding-top: 7em; ">
+    <h3></h3>
+
+    <h3>Full Details</h3>
+
+    <? if ($_SESSION["data4"]): ?>
+        <div class="alert alert-success">
+            <? echo $_SESSION["errmsg"]; ?>
+        </div>
+    <? endif; ?>
+
+    <? if ($_SESSION["data3"]): ?>
+        <? if ($_SESSION["error"]): ?>
+            <div class="alert alert-success">
+                <? echo ($_SESSION["error"])."\n" ?>
+                <? if(!empty($_SESSION["upload_errs"])) print_r($_SESSION["upload_errs"]); ?>
+            </div>
+        <?endif; ?>
+    <? endif; ?>
+
+    <div id="divtoprint">
+        <? foreach ($_SESSION["data4"] as $datum); ?>
+        <div class="pull-right" style= "display: inline-flex;">
+
+
+            <div class="form-group" style="margin-left: 1em;">
+                <button class="btn btn-info btn-sm" id="printer">Print Page</button></div>
+
+            <form action="?edit" method="post">
+                <div class="form-group" style= "margin-left: 1em;">
+                    <input type="hidden" name="id" value="<? echo $datum["id"] ?>">
+                    <button type="submit" class="btn btn-warning btn-sm">
+                        <span class="glyphicon glyphicon-edit"></span> Edit
+                    </button>
+                </div>
+            </form>
+
+            <form action="?delete" method="post">
+                <div class="form-group" style= "margin-left: 1em;">
+                    <input type="hidden" name="id" value="<? echo $datum["id"]?>">
+                    <button type="submit" class="btn btn-danger btn-sm">
+                        <span class="glyphicon glyphicon-trash"></span> Trash </button>
+                </div>
+            </form>
+
+
+        </div>
+
+        <div class="col-md-4 text-center" style="padding: 1.5em;">
+            <a href="<? echo $datum["passport_photo"] ?>"><img src=" <? echo $datum["passport_photo"] ?> " alt="" height="200px"></a>
+        </div>
+        <div class="clearfix"></div>
+        <h5>Name: <? echo $datum["firstname"] . " " .$datum["middlename"]." ".$datum["lastname"] ?> </h5>
+        <h5>Call-up No: <? echo $datum["callupno"] ?></h5>
+        <h5>State Code No: <? echo $datum["statecode"] ?> </h5>
+        <h5>Gender: <? echo $datum["gender"] ?> </h5>
+        <h5>Marital Status: <? echo $datum["maritalstatus"] ?></h5>
+        <h5>Origin: <? echo $datum["origin"] ?> </h5>
+        <h5>Health Status: <? echo $datum["health_status"] ?></h5>
+        <h5>Gsm No: <? echo $datum["gsm_no"] ?> </h5>
+        <h5>E-mail: <? echo $datum["email"] ?></h5>
+        <h5>Institution: <? echo $datum["institution"] ?> </h5>
+        <h5>Course: <? echo $datum["course"] ?></h5>
+        <h5>Certificate: <? echo $datum["certificate"] ?></h5>
+        <h5>Grade: <? echo $datum["grade"] ?></h5>
+        <h5>Deployment State: <? echo $datum["deployment_state"] ?> </h5>
+        <h5>Deployment Type: <? echo $datum["deployment_type"] ?> </h5>
+        <h5>Stream: <? echo $datum["stream"] ?></h5>
+
+        <h3>Next Of Kin Details</h3>
+        <h5>Name: <? echo $datum["next_of_kin_name"]?></h5>
+        <h5>Gsm No: <? echo $datum["next_of_kin_gsm"]?></h5>
+        <h5>Address: <? echo $datum["next_of_kin_address"]?> </h5>
+        <h5>Relationship: <? echo $datum["next_of_kin_relationship"]?> </h5>
+
+        <h3>Service Details</h3>
+        <h5>Certificate No: <? echo $datum["nysccert"]?> </h5>
+        <h5>Service Year:  <? echo $datum["year"]?></h5>
+
+
+
+        <h3>Relocation Details</h3>
+        <?if(!$datum["previous_statecode"] || ! $datum["original_deployment"] || !$datum["original_deployment"] || !$datum["place_of_relocation"] || !$datum["date_of_approval"] || !$datum["status"] || ! $datum["reason"]): ?>
+            <h5>This Person Did Not Relocate/Redeploy</h5>
+
+        <? else : ?>
+            <h5>Previous StateCode: <? echo $datum["previous_statecode"]?> </h5>
+            <h5>Original Deployment: <? echo $datum["original_deployment"]?> </h5>
+            <h5>State Of Relocation: <? echo $datum["place_of_relocation"]?> </h5>
+            <h5>Date Of Approval: <? echo $datum["date_of_approval"]?> </h5>
+            <h5>Status: <? echo $datum["status"]?> </h5>
+            <h5>Reason: <? echo $datum["reason"]?></h5>
+
+        <? endif; ?>
+
+        <h3>Place Of Primary Assignment</h3>
+        <h5>Employer Name: <? echo $datum["employer_name"]?> </h5>
+        <h5>Employer Address:  <? echo $datum["employer_address"]?></h5>
+        <h5>Employer LGA: <? echo $datum["lga"]?></h5>
+        <h5>Date Of Posting: <? echo $datum["date_of_posting"]?></h5>
+
+
+        <h3>Uploaded Documents</h3>
+
+        <?
+        $empty_count = 0;
+        $temp1 = explode(".", $datum["query_related_upload"]);
+        if( end($temp1) != ""): ?>
+            <li><a href="<? echo $datum["query_related_upload"]?>">
+                    Query Proof
+                </a></li>
+        <? else: $empty_count += 1; ?>
+
+        <? endif; ?>
+
+        <?
+        $temp2 = explode(".", $datum["health_related_upload"]);
+        if( end($temp2) != ""):?>
+            <li> <a href="<? echo $datum["health_related_upload"]?>">
+                    Health Proof
+                </a></li>
+        <? else: $empty_count += 1; ?>
+
+        <? endif; ?>
+
+        <?
+        $temp3 = explode(".", $datum["sch_related_upload_1"]);
+        if( end($temp3) != ""):
+            ?>
+            <li><a href="<? echo $datum["sch_related_upload_1"]?>"> School Proof 1
+                </a></li>
+        <? else: $empty_count += 1; ?>
+
+        <? endif; ?>
+
+
+        <?
+        $temp4 = explode(".", $datum["sch_related_upload_2"]);
+        if( end($temp4) != ""):?>
+            <li> <a href="<? echo $datum["sch_related_upload_2"]?>"> School Proof 2</a></li>
+        <? else: $empty_count += 1; ?>
+
+        <? endif; ?>
+
+
+        <?
+        $temp5 = explode(".", $datum["sch_related_upload_3"]);
+        if( end($temp5) != ""): ?>
+            <li> <a href="<? echo $datum["sch_related_upload_3"]?>"> School Proof 3</a></li>
+        <? else: $empty_count += 1; ?>
+
+        <? endif; ?>
+
+        <? if ($empty_count == 5):?>
+            <p> No Files Uploaded </p>
+        <? endif; ?>
+        </ul>
+    </div>
+</div>
+<script src="../assets/js/jquery.min.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+<script src="../assets/js/main.js"></script>
+
+</body>
+</html>
+

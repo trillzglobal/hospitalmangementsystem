@@ -1,0 +1,348 @@
+-- MySQL dump 10.13  Distrib 5.5.41, for debian-linux-gnu (i686)
+--
+-- Host: localhost    Database: nyscportal
+-- ------------------------------------------------------
+-- Server version	5.5.41-0+wheezy1
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+mysqldump: Couldn't find table: "/var/www/db/database.sql"
+root@kali:~# mysqldump -u root -p nyscportal /var/www/db/database.sql
+Enter password: 
+-- MySQL dump 10.13  Distrib 5.5.41, for debian-linux-gnu (i686)
+--
+-- Host: localhost    Database: nyscportal
+-- ------------------------------------------------------
+-- Server version	5.5.41-0+wheezy1
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+mysqldump: Couldn't find table: "/var/www/db/database.sql"
+root@kali:~# mysqldump -u root -p nyscportal
+Enter password: 
+-- MySQL dump 10.13  Distrib 5.5.41, for debian-linux-gnu (i686)
+--
+-- Host: localhost    Database: nyscportal
+-- ------------------------------------------------------
+-- Server version	5.5.41-0+wheezy1
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `cm_details`
+--
+
+DROP TABLE IF EXISTS `cm_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `cm_details` (
+  `id` int(255) NOT NULL AUTO_INCREMENT,
+  `passport_photo` varchar(500) NOT NULL,
+  `statecode` varchar(300) NOT NULL,
+  `firstname` varchar(300) NOT NULL,
+  `middlename` varchar(300) NOT NULL,
+  `lastname` varchar(300) NOT NULL,
+  `institution` varchar(300) NOT NULL,
+  `email` varchar(300) NOT NULL,
+  `callupno` varchar(500) NOT NULL,
+  `date_added` datetime NOT NULL,
+  `date_modified` datetime NOT NULL,
+  `deleted` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `statecode` (`statecode`),
+  UNIQUE KEY `callupno` (`callupno`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `cm_details`
+--
+
+LOCK TABLES `cm_details` WRITE;
+/*!40000 ALTER TABLE `cm_details` DISABLE KEYS */;
+INSERT INTO `cm_details` VALUES (1,'../uploads/pp/OludotunWilliamsLonge_passphoto.jpeg','Ogun','Oludotun','Williams','Longe','Bells University Of Technology','funnica4@gmail.com','112242','2017-05-01 11:39:39','2017-05-01 11:58:52',0),(5,'','od/16b/3712','Ojo','Blessing','David','','','NYSC/IFE/2016/421402','2017-05-20 09:50:13','0000-00-00 00:00:00',0),(7,'','m','m','m','m','m','m','m','2017-05-23 12:28:49','2017-05-23 12:38:45',0);
+/*!40000 ALTER TABLE `cm_details` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `extra_basic_details`
+--
+
+DROP TABLE IF EXISTS `extra_basic_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `extra_basic_details` (
+  `id` bigint(255) NOT NULL AUTO_INCREMENT,
+  `cm_id` int(255) NOT NULL,
+  `gender` varchar(300) NOT NULL,
+  `certificate` varchar(300) NOT NULL,
+  `grade` varchar(300) NOT NULL,
+  `course` varchar(300) NOT NULL,
+  `gsm_no` varchar(200) NOT NULL,
+  `health_status` varchar(200) NOT NULL,
+  `origin` varchar(300) NOT NULL,
+  `maritalstatus` varchar(300) NOT NULL,
+  `deployment_state` varchar(300) NOT NULL,
+  `deployment_type` varchar(300) NOT NULL,
+  `stream` varchar(300) NOT NULL,
+  `date_added` datetime NOT NULL,
+  `date_modified` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `cm_id` (`cm_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `extra_basic_details`
+--
+
+LOCK TABLES `extra_basic_details` WRITE;
+/*!40000 ALTER TABLE `extra_basic_details` DISABLE KEYS */;
+INSERT INTO `extra_basic_details` VALUES (1,1,'male','BSC','First Class Division','Engineering','08142752542','Good','Lagos State','single','Ondo State','B','2','2017-05-01 11:39:39','2017-05-01 11:58:52'),(5,5,'male','BSC','First Class Division','','','','','single','','','','2017-05-20 09:50:13','0000-00-00 00:00:00'),(7,7,'male','BSC','First Class Division','m','m','','m','married','','','','2017-05-23 12:28:49','2017-05-23 12:38:45'),(8,9,'male','BSC','First Class Division','x','x','x','','single','','','','2017-05-24 06:07:43','0000-00-00 00:00:00');
+/*!40000 ALTER TABLE `extra_basic_details` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `graduationDetails`
+--
+
+DROP TABLE IF EXISTS `graduationDetails`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `graduationDetails` (
+  `id` int(255) NOT NULL AUTO_INCREMENT,
+  `cm_id` int(255) NOT NULL,
+  `certificate` varchar(255) NOT NULL,
+  `year` varchar(10) NOT NULL,
+  `date_added` datetime NOT NULL,
+  `date_modified` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `graduationDetails`
+--
+
+LOCK TABLES `graduationDetails` WRITE;
+/*!40000 ALTER TABLE `graduationDetails` DISABLE KEYS */;
+INSERT INTO `graduationDetails` VALUES (1,1,'000000000','2017','2017-05-01 11:39:39','2017-05-01 11:58:52'),(2,2,'eee','eeee','2017-05-02 02:28:57','2017-05-02 02:31:05'),(3,3,'','','2017-05-05 11:31:19','2017-05-14 09:35:28'),(4,4,'','','2017-05-14 12:49:45','0000-00-00 00:00:00'),(5,5,'','','2017-05-20 09:50:13','0000-00-00 00:00:00'),(6,6,'','','2017-05-23 12:25:41','0000-00-00 00:00:00'),(7,7,'','','2017-05-23 12:28:49','2017-05-23 12:38:45'),(8,9,'','','2017-05-24 06:07:43','0000-00-00 00:00:00');
+/*!40000 ALTER TABLE `graduationDetails` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `next_of_kin_details`
+--
+
+DROP TABLE IF EXISTS `next_of_kin_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `next_of_kin_details` (
+  `id` int(25) NOT NULL AUTO_INCREMENT,
+  `cm_id` int(255) NOT NULL,
+  `next_of_kin_name` varchar(400) NOT NULL,
+  `next_of_kin_gsm` varchar(400) NOT NULL,
+  `next_of_kin_address` varchar(400) NOT NULL,
+  `next_of_kin_relationship` varchar(400) NOT NULL,
+  `date_added` datetime NOT NULL,
+  `date_modified` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `cm_id` (`cm_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `next_of_kin_details`
+--
+
+LOCK TABLES `next_of_kin_details` WRITE;
+/*!40000 ALTER TABLE `next_of_kin_details` DISABLE KEYS */;
+INSERT INTO `next_of_kin_details` VALUES (1,1,'Olujumoke Longe','08023012913','31 community road, odogunyan, Ikorodu','Mother','2017-05-01 11:39:39','2017-05-01 11:58:52'),(5,5,'','','','','2017-05-20 09:50:13','0000-00-00 00:00:00'),(7,7,'','','','','2017-05-23 12:28:49','2017-05-23 12:38:45'),(8,9,'','','','','2017-05-24 06:07:43','0000-00-00 00:00:00');
+/*!40000 ALTER TABLE `next_of_kin_details` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ppa`
+--
+
+DROP TABLE IF EXISTS `ppa`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ppa` (
+  `id` bigint(255) NOT NULL AUTO_INCREMENT,
+  `cm_id` int(255) NOT NULL,
+  `lga` varchar(300) NOT NULL,
+  `date_of_posting` varchar(300) NOT NULL,
+  `employer_address` varchar(300) NOT NULL,
+  `employer_name` varchar(300) NOT NULL,
+  `date_added` datetime NOT NULL,
+  `date_modified` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `cm_id` (`cm_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ppa`
+--
+
+LOCK TABLES `ppa` WRITE;
+/*!40000 ALTER TABLE `ppa` DISABLE KEYS */;
+INSERT INTO `ppa` VALUES (1,1,'Akure','20-20-2000','31 community road, odogunyan, Ikorodu','Kitan David','2017-05-01 11:39:39','2017-05-01 11:58:52'),(5,5,'','','','','2017-05-20 09:50:13','0000-00-00 00:00:00'),(7,7,'','','','','2017-05-23 12:28:49','2017-05-23 12:38:45'),(8,9,'','','','','2017-05-24 06:07:43','0000-00-00 00:00:00');
+/*!40000 ALTER TABLE `ppa` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `relocation_details`
+--
+
+DROP TABLE IF EXISTS `relocation_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `relocation_details` (
+  `id` int(255) NOT NULL AUTO_INCREMENT,
+  `cm_id` int(255) NOT NULL,
+  `previous_statecode` varchar(400) NOT NULL,
+  `original_deployment` varchar(400) NOT NULL,
+  `place_of_relocation` varchar(300) NOT NULL,
+  `date_of_approval` varchar(300) NOT NULL,
+  `status` varchar(300) NOT NULL,
+  `reason` varchar(300) NOT NULL,
+  `date_added` datetime NOT NULL,
+  `date_modified` datetime NOT NULL,
+  `relocation_status` bigint(20) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `cm_id` (`cm_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `relocation_details`
+--
+
+LOCK TABLES `relocation_details` WRITE;
+/*!40000 ALTER TABLE `relocation_details` DISABLE KEYS */;
+INSERT INTO `relocation_details` VALUES (1,1,'','','','','','','2017-05-01 11:39:39','2017-05-01 11:58:52',0),(5,5,'','','','','','','2017-05-20 09:50:13','0000-00-00 00:00:00',0),(7,7,'','','','','','','2017-05-23 12:28:49','2017-05-23 12:38:45',0),(8,9,'','','','','','','2017-05-24 06:07:43','0000-00-00 00:00:00',0);
+/*!40000 ALTER TABLE `relocation_details` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `special_details`
+--
+
+DROP TABLE IF EXISTS `special_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `special_details` (
+  `id` int(255) NOT NULL AUTO_INCREMENT,
+  `cm_id` int(255) NOT NULL,
+  `certificate` varchar(500) NOT NULL,
+  `year_served` varchar(500) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `special_details`
+--
+
+LOCK TABLES `special_details` WRITE;
+/*!40000 ALTER TABLE `special_details` DISABLE KEYS */;
+/*!40000 ALTER TABLE `special_details` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `uploads`
+--
+
+DROP TABLE IF EXISTS `uploads`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `uploads` (
+  `id` int(255) NOT NULL AUTO_INCREMENT,
+  `cm_id` int(255) NOT NULL,
+  `query_related_upload` varchar(500) NOT NULL,
+  `health_related_upload` varchar(500) NOT NULL,
+  `sch_related_upload_1` varchar(500) NOT NULL,
+  `sch_related_upload_2` varchar(500) NOT NULL,
+  `sch_related_upload_3` varchar(500) NOT NULL,
+  `date_added` datetime NOT NULL,
+  `date_modified` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `cm_id` (`cm_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `uploads`
+--
+
+LOCK TABLES `uploads` WRITE;
+/*!40000 ALTER TABLE `uploads` DISABLE KEYS */;
+INSERT INTO `uploads` VALUES (1,1,'../uploads/querypics/OludotunWilliamsLonge_query_pic.jpg','../uploads/healthpics/OludotunWilliamsLonge_health_related_upload.jpg','','../uploads/schpics/OludotunWilliamsLonge_sch_related_pic2.jpg','','2017-05-01 11:39:39','0000-00-00 00:00:00'),(5,5,'','','','','','2017-05-20 09:50:13','0000-00-00 00:00:00'),(7,7,'','../uploads/healthpics/mmm_health_related_upload.jpg','','','','2017-05-23 12:28:49','0000-00-00 00:00:00'),(8,9,'','','','','','2017-05-24 06:07:43','0000-00-00 00:00:00');
+/*!40000 ALTER TABLE `uploads` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) NOT NULL,
+  `firstName` varchar(50) NOT NULL,
+  `privilege` int(10) NOT NULL,
+  `password` varchar(150) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'admin','admin','1','21232f297a57a5a743894a0e4a801fc3'),(2,'longe','David','0','c2d4351d2324d1877480046d4db24958');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2017-05-24 13:32:04
+

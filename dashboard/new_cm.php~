@@ -1,0 +1,364 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: bane
+ * Date: 08/04/2017
+ * Time: 5:36 PM
+ */
+require_once "../db/conn.php";
+require_once "../bin/auth.php";
+require_once "../bin/ui-helpers.php";
+session_start();
+if (!$_SESSION["logged"]){
+    header("Location: ../index.php");
+    $_SESSION["login_error_msg"] = "You Need To Be Logged In";
+}
+?>
+
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../assets/css/bootstrap.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link href="../assets/images/img.ico" rel="icon" type="image/x-icon" />
+    <title>NYSC ONDO</title>
+
+</head>
+<body>
+
+<? include "../error_modal.php" ?>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#" style="vertical-align: middle;">Ondo Corpers Database</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><? echo $_SESSION["error"] ?>  <a href="../logout.php" class="btn btn-sm btn-success navbar-btn">Sign Out</a>
+                </li>
+
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<? include "sidebar.php" ?>
+
+<div class="fullbar" style="padding-top: 7em;">
+    <div class="forms">
+
+
+        <form action="?insert" method="post" name ="funkyform" enctype="multipart/form-data">
+
+            <div class="col-md-6" id="col-1" style="display: block">
+                <h3>Basic Details</h3>
+                <div class="form-group ">
+                    <label for="First Name"> First Name</label>
+                    <input type="text" name="firstname" id='1' class="form-control" placeholder="Enter a firstname">
+                </div>
+
+                <div class="form-group ">
+                    <label for="Middle Name"> Middle Name</label>
+                    <input type="text" name="middlename" id='2' class="form-control" placeholder="enter a middle name" >
+                </div>
+
+                <div class="form-group">
+                    <label for="Last Name">Last Name</label>
+                    <input type="text" name="lastname" id='3' class="form-control" placeholder="Enter a last name" >
+                </div>
+
+                <div class="form-group ">
+                    <label for="statecode"> StateCode</label>
+                    <input type="text" name="statecode" id='4' class="form-control" placeholder="Enter State Code :XX/XXX/XXXX" >
+                </div>
+
+                <div class="form-group ">
+                    <label for="callupno"> Call Up No</label>
+                    <input type="text" name="callupno" id='5' class="form-control" placeholder="Enter a call up no" >
+                </div>
+
+                <div class="form-group ">
+                    <label for="email">Email</label>
+                    <input type="text" name="email" id='6' class="form-control" placeholder="Enter a e-mail" >
+                </div>
+
+                <div class="form-group ">
+                    <label for="institution"> Institution</label>
+                    <input type="text" name="institution" id='7' class="form-control" placeholder="Enter an institution" >
+                </div>
+
+
+
+            </div>
+            <div class="col-md-6" id="col-2" style="display: block">
+                <h3>Extra Details</h3>
+                <div class="form-group col-md-6" style="padding: 0;">
+                    <label for="gender"> Gender</label>
+                    <select name="gender" id="8" class="form-control">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+
+
+                <div class="form-group col-md-6"  style="padding-right: 0;">
+                    <label for="maritalstatus"> Marital Status</label>
+                    <select name="maritalstatus" id="14" class="form-control">
+                        <option value="single">Single</option>
+                        <option value="married">Married</option>
+                        <option value="divorced">Divorced</option>
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="certificate"> Certificate</label>
+                    <select name="certificate" id="9" class="form-control">
+                        <option value="BSC">Bsc</option>
+                        <option value="BTECH">BTech</option>
+                        <option value="OND">OND</option>
+                        <option value="HND">HND</option>
+                        <option value="BEng">BEng</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="grade"> Grade</label>
+                    <select name="grade" class="form-control">
+                        <option value="First Class Division">First Class Division </option>
+                        <option value="Second Class Upper Division">Second Class Upper Division</option>
+                        <option value="Second Class Lower Division">Second Class Lower Division</option>
+                        <option value="Third Class Division">Third Class Division</option>
+                        <option value="Pass Division">Pass Division</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="course"> Course</label>
+                    <input type="text" class="form-control" id="10" name="course" placeholder="course">
+                </div>
+                <div class="form-group">
+                    <label for="gsm_no"> Gsm_no</label>
+                    <input type="text" class="form-control" id="11" name="gsm_no" placeholder="gsm no">
+                </div>
+                <div class="form-group">
+                    <label for="health_status"> Health Status</label>
+                    <input type="text" class="form-control" id="12"  name="health_status" placeholder="health status">
+                </div>
+                <div class="form-group">
+                    <label for="origin"> Origin</label>
+                    <input type="text" class="form-control" id="13" name="origin" placeholder="origin">
+                </div>
+            </div>
+
+            <div class="col-md-6" id="col-3" style="display: none">
+                <h3>Deployment Details</h3>
+                <div class="form-group">
+                    <label for="stream">Stream</label>
+                    <input type="text" class="form-control" name="stream" placeholder="Stream">
+                </div>
+                <div class="form-group">
+                    <label for="deployment_type">Deployment Type</label>
+                    <input type="text" class="form-control" name="deployment_type" placeholder="Deployment Type">
+                </div>
+                <div class="form-group">
+                    <label for="deployment_state">Deployment State</label>
+                    <input type="text" class="form-control"  name="deployment_state" placeholder="Deployment State">
+                </div>
+            <h3>Next Of Kin Details</h3>
+                <div class="form-group">
+                    <label for="next_of_kin_name">next of kin name</label>
+                    <input type="text" class="form-control" id="15" name="next_of_kin_name" placeholder="next of kin name">
+                </div>
+                <div class="form-group">
+                    <label for="next_of_kin_gsm"> next of kin gsm</label>
+                    <input type="text" class="form-control" id="16" name="next_of_kin_gsm" placeholder="next of kin gsm">
+                </div>
+                <div class="form-group">
+                    <label for="next_of_kin_address">next of kin address</label>
+                    <input type="text" class="form-control" id="17"  name="next_of_kin_address" placeholder="next of kin address">
+                </div>
+                <div class="form-group">
+                    <label for="next_of_kin_relationship">next of kin relationship</label>
+                    <input type="text" class="form-control" id="18"  name="next_of_kin_relationship" placeholder="next of kin relationship">
+                </div>
+
+
+            </div>
+
+            <div class="col-md-6" id="col-4" style="display: none">
+                <h3>PPA Details</h3>
+                <div class="form-group">
+                    <label for="lga">Local Government Area</label>
+                    <input type="text" class="form-control" id="19"  name="lga" placeholder="Local government area">
+                </div>
+
+                <div class="form-group">
+                    <label for="date_of_posting">Date of posting</label>
+                    <input type="text" class="form-control" id="20"  name="date_of_posting" placeholder="date of posting">
+                </div>
+
+                <div class="form-group">
+                    <label for="employer_address">Employer address</label>
+                    <input type="text" class="form-control" id="21"  name="employer_address" placeholder="employer address">
+                </div>
+
+                <div class="form-group">
+                    <label for="employer_name">Employer name</label>
+                    <input type="text" class="form-control" id="22"  name="employer_name" placeholder="employer name">
+                </div>
+                <br>
+                <h3>Service Details</h3>
+                <div class="form-group">
+                    <label for="certificate_no">Certificate No</label>
+                    <input type="text" class="form-control"   name="certificate_no" placeholder="Certificate No">
+                </div>
+
+                <div class="form-group">
+                    <label for="service_year">Service Year</label>
+                    <input type="text" class="form-control"  name="service_year" placeholder="Service Year">
+                </div>
+
+            </div>
+
+
+
+            <div class="col-md-6" id="col-5" style="display: none">
+                <h3>Add Images</h3>
+                <div class="form-group">
+                    <label for="passport_photo">Passport Photo</label>
+                    <input type="file" class="form-control" id="29"  name="passport_photo" placeholder="passport_photo">
+                </div>
+                <div class="form-group">
+                    <label for="query_related_upload">Any Query Related Document ?</label>
+                    <input type="file" class="form-control" id="30"  name="query_related_upload" placeholder="query_related_upload">
+                </div>
+                <div class="form-group">
+                    <label for="health_related_upload">Any Health Related Document ?</label>
+                    <input type="file" class="form-control" id="31"  name="health_related_upload" placeholder="health related upload">
+                </div>
+                <div class="form-group">
+                    <label for="sch_related_upload_1">School Related Upload 1</label>
+                    <input type="file" class="form-control" id="32"  name="sch_related_upload_1" placeholder="Sch related upload 1">
+                </div>
+                <div class="form-group">
+                    <label for="sch_related_upload_2">School Related Upload 2</label>
+                    <input type="file" class="form-control" id="33"  name="sch_related_upload_2" placeholder="Sch related upload 2">
+                </div>
+                <div class="form-group">
+                    <label for="sch_related_upload_3">School Related Upload 3</label>
+                    <input type="file" class="form-control" id="34"  name="sch_related_upload_3" placeholder="Sch related upload 3">
+                </div>
+                <div class="form-group">
+                    <label for="sch_related_upload_3">Did He/She Relocate?</label>
+                    <select class="form-control" id="relocate_status">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+
+                    </select>
+
+                </div>
+
+
+
+
+            </div>
+
+     <div class="col-md-6" id="col-7" style="display: none;">
+         <h3>Please Confirm</h3>
+         <p>Before Creating This Entry, Please Confirm The Data.</p>
+     <!--    <div class="form-group">
+             <input type="submit" class="btn btn-success btn-block" id="submit" name="submit" value="submit">
+         </div>-->
+         <div class="form-group">
+             <input type="submit" class="btn btn-success btn-block" id="submit" name="submit" value="submit">
+         </div>
+     </div>
+            <div class="col-md-6" id="col-6" style="display: none;">
+                <h3>Relocation Details</h3>
+                <div class="form-group">
+                    <label for="previous_statecode">Previous statecode</label>
+                    <input type="text" class="form-control" id="23"  name="previous_statecode" placeholder="previous statecode">
+                </div>
+                <div class="form-group">
+                    <label for="original_deployment">Original deployment</label>
+                    <input type="text" class="form-control" id="24"  name="original_deployment" placeholder="original deployment">
+                </div>
+                <div class="form-group">
+                    <label for="place_of_relocation">Place of relocation</label>
+                    <input type="text" class="form-control" id="25"  name="place_of_relocation" placeholder="place of relocation">
+                </div>
+                <div class="form-group">
+                    <label for="date_of_approval">Date of approval</label>
+                    <input type="text" class="form-control" id="26"  name="date_of_approval" placeholder="date_of_approval">
+                </div>
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <input type="text" class="form-control" id="27"  name="status" placeholder="status">
+                </div>
+                <div class="form-group">
+                    <label for="reason">Reason</label>
+                    <input type="text" class="form-control" id="28"  name="reason" placeholder="reason">
+                </div>
+            </div>
+
+
+        </form>
+
+        <div class="clearfix"></div>
+        <div class="btn-group" style="margin-top: .5em; padding-left: 1em;"  role="group" aria-label="First group">
+            <button type="button" class="btn btn-default" id="b1" >1</button>
+            <button type="button" class="btn btn-default" id="b2" >2</button>
+            <button type="button" class="btn btn-default" id="b3" >3</button>
+        </div>
+
+    </div>
+</div>
+
+
+
+<script>
+<!--    --><?//if($_SESSION["has_alert"]): ?>
+//        alert("<?// echo $_SESSION["has_alert"] ?>//");
+//      <?//  $_SESSION["has_alert"] = "" ?>
+<!--    --><?// endif; ?>
+</script>
+<script src="../assets/js/jquery.min.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+<script src="../assets/js/main.js"></script>
+
+<?  if(!empty($_SESSION["empty_fields"]) && count($_SESSION["empty_fields"]) > 10 ): ?>
+    <script src="../assets/js/modal.js"></script>
+
+<?
+unset($_SESSION["empty_fields"]);
+endif;?>
+
+<?  if(!empty($_SESSION["empty_fields"]) && count($_SESSION["empty_fields"]) < 10 ): ?>
+    <script src="../assets/js/modal.js"></script>
+
+    <?
+    unset($_SESSION["empty_fields"]);
+endif;?>
+
+
+
+</body>
+</html>

@@ -1,0 +1,9 @@
+<?php
+
+session_start();
+ if ($_SESSION["previledge"]!= "1") {
+	header("Location: ../dashboard/home.php");
+	exit();
+	}
+
+?>
